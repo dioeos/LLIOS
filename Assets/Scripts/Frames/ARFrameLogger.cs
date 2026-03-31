@@ -1,60 +1,60 @@
 using UnityEngine;
+using UnityEngine.UIElements;
 using UnityEngine.XR.ARFoundation;
 using UnityEngine.XR.ARSubsystems;
 
 [RequireComponent(typeof(ARCameraManager))]
 public class ARFrameLogger : MonoBehaviour {
-  private ARCameraManager arCameraManager;
+  private ARCameraManager cameraManager;
 
   [SerializeField]
+  private UIDocument uiDocument;
+
+  private Label statusLabel;
+
   private bool isRecording = false;
-  [SerializeField]
-  private int logEveryNFrames = 30;
+  private int frameCount = 0;
 
-  private int frameCounter = 0;
+  private void Awake() { cameraManager = GetComponent<ARCameraManager>(); }
 
-  private void Awake() { arCameraManager = GetComponent<ARCameraManager>(); }
+  private void Start() {
+    if (uiDocument != null) {
+      var root = uiDocument.rootVisualElement;
 
-  private void OnEnable() { arCameraManager.frameReceived += OnFrameReceived; }
+      statusLabel = root.Q<Label>("Label");
 
-  private void OnDisable() { arCameraManager.frameReceived -= OnFrameReceived; }
+      if (statusLabel != null)
+        statusLabel.text = "Ready";
+    }
+  }
+
+  private void OnEnable() { cameraManager.frameReceived += OnFrameReceived; }
+
+  private void OnDisable() { cameraManager.frameReceived -= OnFrameReceived; }
 
   public void ToggleRecording() {
     isRecording = !isRecording;
 
-    Debug.Log(isRecording ? "=== RECORDING STARTED ==="
-                          : "=== RECORDING STOPPED ===");
-  }
-
-  public void StartRecording() {
-    isRecording = true;
-    Debug.Log("=== RECORDING STARTED ===");
-  }
-
-  public void StopRecording() {
-    isRecording = false;
-    Debug.Log("=== RECORDING STOPPED ===");
+    if (statusLabel != null)
+      statusLabel.text =
+          isRecording ? "Recording started..." : "Recording stopped";
   }
 
   private void OnFrameReceived(ARCameraFrameEventArgs args) {
     if (!isRecording)
       return;
 
-    frameCounter++;
+    frameCount++;
 
-    if (logEveryNFrames > 1 && frameCounter % logEveryNFrames != 0)
-      return;
+    Vector3 pos = transform.position;
 
-    Vector3 camPos = transform.position;
-    Quaternion camRot = transform.rotation;
+    if (statusLabel != null) {
+      statusLabel.text =
+          $"Frames: {frameCount}\n" + $"Time: {Time.time:F2}\n" + $"Pos: {pos}";
+    }
 
-    Debug.Log($"[AR FRAME] #" + frameCounter + $" time={Time.time:F2}" +
-              $" pos={camPos}" + $" rot={camRot.eulerAngles}");
-
-    if (arCameraManager.TryAcquireLatestCpuImage(out XRCpuImage image)) {
-      Debug.Log(
-          $"[AR IMAGE] {image.width}x{image.height} format={image.format}");
-
+    if (cameraManager.TryAcquireLatestCpuImage(out XRCpuImage image)) {
+      statusLabel.text += $"\nImage: {image.width}x{image.height}";
       image.Dispose();
     }
   }

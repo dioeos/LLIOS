@@ -1,8 +1,9 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
     <Style src="project://database/Assets/UI/menu-styling.uss?fileID=7433441132597879392&amp;guid=b4a6e3c516952f245a8c5eedf1735cc8&amp;type=3#menu-styling" />
     <ui:VisualElement name="Panel" class="root">
-        <ui:Button parse-escape-sequences="true" display-tooltip-when-elided="true" class="record-button" name="RecordButton">
-            <ui:VisualElement style="flex-grow: 1;" class="record-button-toggle" name="RecordToggle"/>
+        <ui:Button parse-escape-sequences="true" display-tooltip-when-elided="true" name="RecordButton" class="record-button">
+            <ui:VisualElement name="RecordToggle" class="record-button-toggle" style="flex-grow: 1;" />
         </ui:Button>
     </ui:VisualElement>
+    <ui:Label tabindex="-1" text="Label" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Label" />
 </ui:UXML>
