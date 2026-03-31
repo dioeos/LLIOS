@@ -2,19 +2,13 @@ using UnityEngine;
 using UnityEngine.UIElements;
 
 public class RecordButtonController : MonoBehaviour {
-  [SerializeField]
-  private UIDocument uiDocument;
+  public ARFrameLogger logger;
 
-  private Button recordButton;
-  private VisualElement recordToggle;
-  private bool isRecording;
+  private void Start() {
+    var root = GetComponent<UIDocument>().rootVisualElement;
 
-  private void OnEnable() {
-    var root = uiDocument.rootVisualElement;
-    recordButton = root.Q<Button>("RecordButton");
-    recordToggle = root.Q<VisualElement>("RecordToggle");
-    recordButton.clicked += OnRecordClicked;
+    Button recordButton = root.Q<Button>("record-button");
+
+    recordButton.clicked += () => { logger.ToggleRecording(); };
   }
-
-  private void OnRecordClicked() {}
 }
