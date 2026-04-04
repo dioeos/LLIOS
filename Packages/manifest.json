@@ -43,6 +43,6 @@
     "com.unity.modules.vr": "1.0.0",
     "com.unity.modules.wind": "1.0.0",
     "com.unity.modules.xr": "1.0.0",
-    "com.dioeos.unityapplereplaykit": "file:../../../Projects/unity-apple-replay-kit"
+    "com.dioeos.unityapplereplaykit": "https://github.com/dioeos/unity-apple-replay-kit.git"
   }
 }
