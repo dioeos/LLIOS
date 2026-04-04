@@ -1,3 +1,4 @@
+using Dioeos.UnityAppleReplayKit;
 using UnityEngine;
 using UnityEngine.UIElements;
 using UnityEngine.XR.ARFoundation;
@@ -26,9 +27,9 @@ public class ARFrameLogger : MonoBehaviour {
     if (uiDocument != null) {
       var root = uiDocument.rootVisualElement;
       statusLabel = root.Q<Label>("Label");
-
+      string result = UnityAppleReplayKitApi.SayHello();
       if (statusLabel != null)
-        statusLabel.text = "Ready";
+        statusLabel.text = result;
     }
   }
 
