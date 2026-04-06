@@ -27,7 +27,8 @@ public class ARFrameLogger : MonoBehaviour {
     if (uiDocument != null) {
       var root = uiDocument.rootVisualElement;
       statusLabel = root.Q<Label>("Label");
-      string result = UnityAppleReplayKitApi.SayHello();
+      bool isReplayAvailable = UnityAppleReplayKitApi.IsReplayKitAvailable();
+      string result = isReplayAvailable.ToString();
       if (statusLabel != null)
         statusLabel.text = result;
     }
@@ -49,6 +50,24 @@ public class ARFrameLogger : MonoBehaviour {
     if (statusLabel != null)
       statusLabel.text =
           isRecording ? "Recording started..." : "Recording stopped";
+
+    if (!UnityAppleReplayKitApi.IsReplayKitAvailable())
+    {
+      var root = uiDocument.rootVisualElement;
+      statusLabel = root.Q<Label>("Label");
+      statusLabel.text = "Failed to toggle recording";
+    }
+
+    if (isRecording)
+    {
+      UnityAppleReplayKitApi.StartRecording();
+    }
+    else
+    {
+      UnityAppleReplayKitApi.StopRecording();
+    }
+
+
   }
 
   private void OnFrameReceived(ARCameraFrameEventArgs args) {
