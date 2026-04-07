@@ -1,11 +1,11 @@
 {
   "dependencies": {
     "com.dioeos.unityapplereplaykit": {
-      "version": "https://github.com/dioeos/unity-apple-replay-kit.git",
+      "version": "https://github.com/dioeos/unity-apple-video-kit.git",
       "depth": 0,
       "source": "git",
       "dependencies": {},
-      "hash": "5429095ae2c9507fa53dcd70ca8e49fe51ab34af"
+      "hash": "c40b0eb2a5622c5d7d8b6d9b97b68477119bcac1"
     },
     "com.unity.adaptiveperformance": {
       "version": "4.0.1",

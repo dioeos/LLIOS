@@ -28,9 +28,10 @@ public class ARFrameLogger : MonoBehaviour {
       var root = uiDocument.rootVisualElement;
       statusLabel = root.Q<Label>("Label");
       bool isReplayAvailable = UnityAppleReplayKitApi.IsReplayKitAvailable();
+      string greeting = UnityAppleVideoKitHealthApi.SayHello();
       string result = isReplayAvailable.ToString();
       if (statusLabel != null)
-        statusLabel.text = result;
+        statusLabel.text = $"{result} : {greeting}";
     }
   }
 
