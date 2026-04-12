@@ -9,6 +9,9 @@ public class ARFrameLogger : MonoBehaviour {
   private ARCameraManager cameraManager;
 
   [SerializeField]
+  private SessionManager sessionManager;
+
+  [SerializeField]
   private UIDocument uiDocument;
 
   private Label statusLabel;
@@ -28,10 +31,11 @@ public class ARFrameLogger : MonoBehaviour {
       var root = uiDocument.rootVisualElement;
       statusLabel = root.Q<Label>("Label");
       bool isReplayAvailable = UnityAppleReplayKitApi.IsReplayKitAvailable();
-      string greeting = UnityAppleVideoKitHealthApi.SayHello();
-      string result = isReplayAvailable.ToString();
+      string version = sessionManager.GetARSessionVersion().ToString();
+      string ptrString = sessionManager.GetARSessionPtr().ToString();
+
       if (statusLabel != null)
-        statusLabel.text = $"{result} : {greeting}";
+        statusLabel.text = $"{version} : {ptrString}";
     }
   }
 
