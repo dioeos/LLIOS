@@ -3,6 +3,7 @@ using UnityEngine.XR.ARFoundation;
 using UnityEngine.XR.ARSubsystems;
 using System;
 using System.Runtime.InteropServices;
+using Dioeos.UnityAppleReplayKit;
 
 [StructLayout(LayoutKind.Sequential)]
 public struct NativeSessionWrapper
@@ -21,13 +22,46 @@ public class SessionManager : MonoBehaviour
   private NativeSessionWrapper _nativeWrapper;
 
   private bool _attached;
+  private double _currentArTimestamp = 0.0;
 
   void Start()
   {
-    GetARNativePointer();
+    MarshalNativePointer();
+    
+    if (_sessionSubsystem != null && _sessionSubsystem.nativePtr != IntPtr.Zero)
+    {
+        _attached = AttachSession(_sessionSubsystem.nativePtr);
+    }
   }
 
-  private void GetARNativePointer()
+  void Update()
+  {
+    if (_attached)
+    {
+      _currentArTimestamp = SessionManagerApi.GetSessionTimestamp();
+    }
+  }
+
+  void OnDestroy()
+  {
+    DetachSession();
+  }
+
+  private void DetachSession()
+  {
+    SessionManagerApi.DetachSession();
+  }
+
+  private bool AttachSession(IntPtr sessionPointer)
+  {
+    if (sessionPointer == IntPtr.Zero)
+      return false;
+
+    bool isConnected = SessionManagerApi.AttachSession(sessionPointer);
+    return isConnected;
+  }
+
+  private void MarshalNativePointer()
   {
     if (arSession == null)
       return;
@@ -37,7 +71,7 @@ public class SessionManager : MonoBehaviour
     if (_sessionSubsystem == null)
       return;
 
-    IntPtr wrapperPtr = arSession.subsystem.nativePtr;
+    IntPtr wrapperPtr = _sessionSubsystem.nativePtr;
 
     if (wrapperPtr == IntPtr.Zero)
       return;
@@ -53,6 +87,11 @@ public class SessionManager : MonoBehaviour
   public IntPtr GetARSessionPtr()
   {
     return _nativeWrapper.session;
+  }
+
+  public double GetTimestamp()
+  {
+    return _currentArTimestamp;
   }
 }
 

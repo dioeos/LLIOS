@@ -33,7 +33,8 @@ public class ARFrameLogger : MonoBehaviour {
       bool isReplayAvailable = UnityAppleReplayKitApi.IsReplayKitAvailable();
       string version = sessionManager.GetARSessionVersion().ToString();
       string ptrString = sessionManager.GetARSessionPtr().ToString();
-      statusLabel.text = $"{version} : {ptrString}";
+      double time = sessionManager.GetTimestamp();
+      statusLabel.text = $"{version} : {ptrString} : {time}";
     }
   }
 
