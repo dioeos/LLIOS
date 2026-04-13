@@ -33,8 +33,7 @@ public class ARFrameLogger : MonoBehaviour {
       bool isReplayAvailable = UnityAppleReplayKitApi.IsReplayKitAvailable();
       string version = sessionManager.GetARSessionVersion().ToString();
       string ptrString = sessionManager.GetARSessionPtr().ToString();
-      double time = sessionManager.GetTimestamp();
-      statusLabel.text = $"{version} : {ptrString} : {time}";
+      statusLabel.text = $"{version} : {ptrString}";
     }
   }
 
@@ -79,9 +78,10 @@ public class ARFrameLogger : MonoBehaviour {
       return;
 
     frameCount++;
+    double time = sessionManager.GetTimestamp();
 
     if (statusLabel != null && frameCount % 15 == 0) {
-      statusLabel.text = $"Frames: {frameCount}\n" + $"Time: {Time.time:F2}\n" +
+      statusLabel.text = $"Frames: {frameCount}\n" + $"Time: {time}\n" +
                          $"Pos: {transform.position}";
     }
   }
