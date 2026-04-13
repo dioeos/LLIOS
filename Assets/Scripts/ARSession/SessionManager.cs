@@ -22,7 +22,7 @@ public class SessionManager : MonoBehaviour
 
   private bool _attached;
 
-  void Awake()
+  void Start()
   {
     GetARNativePointer();
   }
