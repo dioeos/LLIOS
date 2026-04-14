@@ -1,12 +1,18 @@
 using UnityEngine;
 using UnityEngine.UIElements;
+using Dioeos.UnityAppleReplayKit;
 
 [RequireComponent(typeof(UIDocument))]
 public class RecordButtonController : MonoBehaviour {
+
+  [SerializeField]
+  private SessionManager sessionManager;
+
   [SerializeField]
   private ARFrameLogger logger;
 
   private Button recordButton;
+  private bool isRecording;
 
   private void OnEnable() {
     var uiDocument = GetComponent<UIDocument>();
@@ -45,5 +51,21 @@ public class RecordButtonController : MonoBehaviour {
       recordButton.clicked -= OnRecordClicked;
   }
 
-  private void OnRecordClicked() { logger.ToggleRecording(); }
+  private void OnRecordClicked() { 
+    logger.ToggleRecording(); 
+    if (!sessionManager.GetIsAttached())
+      return;
+
+    if (isRecording) {
+      SessionManagerApi.StopRecording();
+      isRecording = false;
+    } else {
+      SessionManagerApi.StartRecording();
+      isRecording = true;
+    }
+  }
+
+  public bool GetIsRecording() {
+    return isRecording;
+  }
 }

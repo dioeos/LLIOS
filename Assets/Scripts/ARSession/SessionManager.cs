@@ -16,6 +16,9 @@ public struct NativeSessionWrapper
 public class SessionManager : MonoBehaviour
 {
   [SerializeField]
+  private RecordButtonController rbc;
+
+  [SerializeField]
   private ARSession arSession;
 
   private XRSessionSubsystem _sessionSubsystem;
@@ -39,6 +42,9 @@ public class SessionManager : MonoBehaviour
     if (_attached)
     {
       _currentArTimestamp = SessionManagerApi.GetSessionTimestamp();
+
+      if (rbc.GetIsRecording())
+        SessionManagerApi.UpdateRecording();
     }
   }
 
@@ -92,6 +98,11 @@ public class SessionManager : MonoBehaviour
   public double GetTimestamp()
   {
     return _currentArTimestamp;
+  }
+
+  public bool GetIsAttached()
+  {
+    return _attached;
   }
 }
 
