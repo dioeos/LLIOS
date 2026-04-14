@@ -52,7 +52,7 @@ public class RecordButtonController : MonoBehaviour {
   }
 
   private void OnRecordClicked() { 
-    logger.ToggleRecording(); 
+    // logger.ToggleRecording(); 
     if (!sessionManager.GetIsAttached())
       return;
 
