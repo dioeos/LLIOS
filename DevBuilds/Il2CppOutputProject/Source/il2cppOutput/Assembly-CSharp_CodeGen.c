@@ -1,0 +1,144 @@
+﻿#include "pch-c.h"
+#ifndef _MSC_VER
+# include <alloca.h>
+#else
+# include <malloc.h>
+#endif
+
+
+#include "codegen/il2cpp-codegen-metadata.h"
+
+
+
+
+
+extern void SessionManager_Start_m5F59BF4A78C3F124B62E54ABCE4866D95A314A7F (void);
+extern void SessionManager_Update_m9D888F26F75FE34A056A1D00077F6CC48F2983AF (void);
+extern void SessionManager_TryAttach_m15B168E5ABAC9BB96558C6245B270B5346B0CDC0 (void);
+extern void SessionManager_OnDestroy_mBBB2600920198F70D903D5D873E71729F9EBC026 (void);
+extern void SessionManager_DetachSession_m58B30786DFA4BBBDC4A9622E2BDE2912BCCC95F5 (void);
+extern void SessionManager_AttachSession_m0B966299BB5B73D4DAD9956A7B6F98074BA572E9 (void);
+extern void SessionManager_MarshalNativePointer_m4879B07B41FA6AAB7838FA56105DF3CA5023B5DE (void);
+extern void SessionManager_GetARSessionVersion_m8EEC334B914ADCF1A47A3895103791CFF2540D56 (void);
+extern void SessionManager_GetARSessionPtr_m1828FFF41F98DE442FA389F3034B2266172E73A9 (void);
+extern void SessionManager_GetTimestamp_m7AD0E669E5189267D99A6030723F83B0949B174D (void);
+extern void SessionManager_GetIsAttached_m4AA9404490C73331E8990DF3A1F9FDF9597C952F (void);
+extern void SessionManager__ctor_m5ADED50506995345E4CF0495C3A5739272127417 (void);
+extern void ARFrameLogger_Awake_m46520E4ADF859ED62B10654DAFD2B955309E7256 (void);
+extern void ARFrameLogger_Start_mB46986ED16F3624D512404A998C84CF053DA1C36 (void);
+extern void ARFrameLogger_OnEnable_mF8EAB4398F466CDB279932964D4DFEBBF0E44970 (void);
+extern void ARFrameLogger_OnDisable_mA435105A692D175570FFDC7C902D450EE5A2331F (void);
+extern void ARFrameLogger_SetRecordingState_mACD64A161EA3E396C8251C5CECB5F0A23B848100 (void);
+extern void ARFrameLogger_OnFrameReceived_m6EC4743215A704364CB1FF65AB115D694454904A (void);
+extern void ARFrameLogger__ctor_mEB275D2F01FED6A27679A2AF96820105C4A7E979 (void);
+extern void RecorderManager_get_IsRecording_mE560020DCF44732ABEF356EB440EB2F1B3B71FD7 (void);
+extern void RecorderManager_set_IsRecording_mFA2391AC393ECD0AB3D8F601B30DD027E3843507 (void);
+extern void RecorderManager_add_RecordingStateChanged_m48B26B4B098EB2181A94D43C0AB8C7C8487266AF (void);
+extern void RecorderManager_remove_RecordingStateChanged_m44FEAD79316E39976EE2DB61A737928AF043D1C2 (void);
+extern void RecorderManager_ToggleRecording_m6EC46738A205A89C953CD2FA67AF889263AC59C0 (void);
+extern void RecorderManager__ctor_m884130AB3827833DF9117E97245715A62B0260F5 (void);
+extern void RecordButtonController_OnEnable_m6462BA1BEE8B4C1B83BCEDA5F21249A70F29F8F9 (void);
+extern void RecordButtonController_OnDisable_m15308482E4A393FDD4CE4EF850DE169972855B0C (void);
+extern void RecordButtonController_OnRecordClicked_m1EE91F5DE99CEA8EF15EA661CBB6F804C8DB540B (void);
+extern void RecordButtonController_GetIsRecording_m66CC493BBD6F943FD21F819D86A69DC040F67B18 (void);
+extern void RecordButtonController__ctor_mA20057533FAC94B90253B4205C13B2D5D4FB77EA (void);
+extern void Readme__ctor_m69C325C4C171DCB0312B646A9034AA91EA8C39C6 (void);
+extern void Section__ctor_m5F732533E4DFC0167D965E5F5DB332E46055399B (void);
+extern void UnitySourceGeneratedAssemblyMonoScriptTypes_v1_Get_mBEB95BEB954BB63E9710BBC7AD5E78C4CB0A0033 (void);
+extern void UnitySourceGeneratedAssemblyMonoScriptTypes_v1__ctor_mE70FB23ACC1EA12ABC948AA22C2E78B2D0AA39B1 (void);
+static Il2CppMethodPointer s_methodPointers[34] = 
+{
+	SessionManager_Start_m5F59BF4A78C3F124B62E54ABCE4866D95A314A7F,
+	SessionManager_Update_m9D888F26F75FE34A056A1D00077F6CC48F2983AF,
+	SessionManager_TryAttach_m15B168E5ABAC9BB96558C6245B270B5346B0CDC0,
+	SessionManager_OnDestroy_mBBB2600920198F70D903D5D873E71729F9EBC026,
+	SessionManager_DetachSession_m58B30786DFA4BBBDC4A9622E2BDE2912BCCC95F5,
+	SessionManager_AttachSession_m0B966299BB5B73D4DAD9956A7B6F98074BA572E9,
+	SessionManager_MarshalNativePointer_m4879B07B41FA6AAB7838FA56105DF3CA5023B5DE,
+	SessionManager_GetARSessionVersion_m8EEC334B914ADCF1A47A3895103791CFF2540D56,
+	SessionManager_GetARSessionPtr_m1828FFF41F98DE442FA389F3034B2266172E73A9,
+	SessionManager_GetTimestamp_m7AD0E669E5189267D99A6030723F83B0949B174D,
+	SessionManager_GetIsAttached_m4AA9404490C73331E8990DF3A1F9FDF9597C952F,
+	SessionManager__ctor_m5ADED50506995345E4CF0495C3A5739272127417,
+	ARFrameLogger_Awake_m46520E4ADF859ED62B10654DAFD2B955309E7256,
+	ARFrameLogger_Start_mB46986ED16F3624D512404A998C84CF053DA1C36,
+	ARFrameLogger_OnEnable_mF8EAB4398F466CDB279932964D4DFEBBF0E44970,
+	ARFrameLogger_OnDisable_mA435105A692D175570FFDC7C902D450EE5A2331F,
+	ARFrameLogger_SetRecordingState_mACD64A161EA3E396C8251C5CECB5F0A23B848100,
+	ARFrameLogger_OnFrameReceived_m6EC4743215A704364CB1FF65AB115D694454904A,
+	ARFrameLogger__ctor_mEB275D2F01FED6A27679A2AF96820105C4A7E979,
+	RecorderManager_get_IsRecording_mE560020DCF44732ABEF356EB440EB2F1B3B71FD7,
+	RecorderManager_set_IsRecording_mFA2391AC393ECD0AB3D8F601B30DD027E3843507,
+	RecorderManager_add_RecordingStateChanged_m48B26B4B098EB2181A94D43C0AB8C7C8487266AF,
+	RecorderManager_remove_RecordingStateChanged_m44FEAD79316E39976EE2DB61A737928AF043D1C2,
+	RecorderManager_ToggleRecording_m6EC46738A205A89C953CD2FA67AF889263AC59C0,
+	RecorderManager__ctor_m884130AB3827833DF9117E97245715A62B0260F5,
+	RecordButtonController_OnEnable_m6462BA1BEE8B4C1B83BCEDA5F21249A70F29F8F9,
+	RecordButtonController_OnDisable_m15308482E4A393FDD4CE4EF850DE169972855B0C,
+	RecordButtonController_OnRecordClicked_m1EE91F5DE99CEA8EF15EA661CBB6F804C8DB540B,
+	RecordButtonController_GetIsRecording_m66CC493BBD6F943FD21F819D86A69DC040F67B18,
+	RecordButtonController__ctor_mA20057533FAC94B90253B4205C13B2D5D4FB77EA,
+	Readme__ctor_m69C325C4C171DCB0312B646A9034AA91EA8C39C6,
+	Section__ctor_m5F732533E4DFC0167D965E5F5DB332E46055399B,
+	UnitySourceGeneratedAssemblyMonoScriptTypes_v1_Get_mBEB95BEB954BB63E9710BBC7AD5E78C4CB0A0033,
+	UnitySourceGeneratedAssemblyMonoScriptTypes_v1__ctor_mE70FB23ACC1EA12ABC948AA22C2E78B2D0AA39B1,
+};
+static const int32_t s_InvokerIndices[34] = 
+{
+	7080,
+	7080,
+	7080,
+	7080,
+	7080,
+	3806,
+	7080,
+	6919,
+	6921,
+	6866,
+	6841,
+	7080,
+	7080,
+	7080,
+	7080,
+	7080,
+	5409,
+	5369,
+	7080,
+	6841,
+	5409,
+	5532,
+	5532,
+	7080,
+	7080,
+	7080,
+	7080,
+	7080,
+	6841,
+	7080,
+	7080,
+	7080,
+	10638,
+	7080,
+};
+extern const Il2CppDebuggerMetadataRegistration g_DebuggerMetadataRegistrationAssemblyU2DCSharp;
+IL2CPP_EXTERN_C const Il2CppCodeGenModule g_AssemblyU2DCSharp_CodeGenModule;
+const Il2CppCodeGenModule g_AssemblyU2DCSharp_CodeGenModule = 
+{
+	"Assembly-CSharp.dll",
+	34,
+	s_methodPointers,
+	0,
+	NULL,
+	s_InvokerIndices,
+	0,
+	NULL,
+	0,
+	NULL,
+	0,
+	NULL,
+	&g_DebuggerMetadataRegistrationAssemblyU2DCSharp,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+};
