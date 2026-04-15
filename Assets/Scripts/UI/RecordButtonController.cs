@@ -52,9 +52,11 @@ public class RecordButtonController : MonoBehaviour {
   }
 
   private void OnRecordClicked() { 
-    // logger.ToggleRecording(); 
-    if (!sessionManager.GetIsAttached())
+    if (!sessionManager.GetIsAttached()) {
+      Debug.LogWarning("Record button clicked, but session manager is not attached yet.");
+      if (logger != null) logger.SetRecordingState(false);
       return;
+    }
 
     if (isRecording) {
       SessionManagerApi.StopRecording();
@@ -62,6 +64,10 @@ public class RecordButtonController : MonoBehaviour {
     } else {
       SessionManagerApi.StartRecording();
       isRecording = true;
+    }
+
+    if (logger != null) {
+      logger.SetRecordingState(isRecording);
     }
   }
 

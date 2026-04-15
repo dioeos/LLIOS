@@ -29,22 +29,35 @@ public class SessionManager : MonoBehaviour
 
   void Start()
   {
-    MarshalNativePointer();
-    
-    if (_sessionSubsystem != null && _sessionSubsystem.nativePtr != IntPtr.Zero)
-    {
-        _attached = AttachSession(_sessionSubsystem.nativePtr);
-    }
+    TryAttach();
   }
 
   void Update()
   {
+    if (!_attached)
+    {
+      TryAttach();
+    }
+
     if (_attached)
     {
       _currentArTimestamp = SessionManagerApi.GetSessionTimestamp();
 
       if (rbc.GetIsRecording())
         SessionManagerApi.UpdateRecording();
+    }
+  }
+
+  private void TryAttach()
+  {
+    if (_sessionSubsystem == null || _sessionSubsystem.nativePtr == IntPtr.Zero)
+    {
+      MarshalNativePointer();
+    }
+
+    if (_sessionSubsystem != null && _sessionSubsystem.nativePtr != IntPtr.Zero)
+    {
+      _attached = AttachSession(_sessionSubsystem.nativePtr);
     }
   }
 
