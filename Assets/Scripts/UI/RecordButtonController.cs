@@ -59,10 +59,10 @@ public class RecordButtonController : MonoBehaviour {
     }
 
     if (isRecording) {
-      SessionManagerApi.StopRecording();
+      CoordinatorApi.StopRecording();
       isRecording = false;
     } else {
-      SessionManagerApi.StartRecording();
+      CoordinatorApi.StartRecording();
       isRecording = true;
     }
 

@@ -67,10 +67,10 @@ public class ARFrameLogger : MonoBehaviour {
       return;
 
     frameCount++;
-    double time = sessionManager.GetTimestamp();
+    // double time = sessionManager.GetTimestamp();
 
     if (statusLabel != null && frameCount % 15 == 0) {
-      statusLabel.text = $"Frames: {frameCount}\n" + $"Time: {time}\n" +
+      statusLabel.text = $"Frames: {frameCount}\n" + $"Time:\n" +
                          $"Pos: {transform.position}";
     }
   }

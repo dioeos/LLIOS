@@ -41,10 +41,10 @@ public class SessionManager : MonoBehaviour
 
     if (_attached)
     {
-      _currentArTimestamp = SessionManagerApi.GetSessionTimestamp();
+      // _currentArTimestamp = SessionManagerApi.GetSessionTimestamp();
 
       if (rbc.GetIsRecording())
-        SessionManagerApi.UpdateRecording();
+        CoordinatorApi.UpdateRecording();
     }
   }
 
@@ -68,7 +68,7 @@ public class SessionManager : MonoBehaviour
 
   private void DetachSession()
   {
-    SessionManagerApi.DetachSession();
+    CoordinatorApi.DetachSession();
   }
 
   private bool AttachSession(IntPtr sessionPointer)
@@ -76,7 +76,7 @@ public class SessionManager : MonoBehaviour
     if (sessionPointer == IntPtr.Zero)
       return false;
 
-    bool isConnected = SessionManagerApi.AttachSession(sessionPointer);
+    bool isConnected = CoordinatorApi.AttachSession(sessionPointer);
     return isConnected;
   }
 
