@@ -15,20 +15,31 @@ public struct NativeSessionWrapper
 
 public class SessionManager : MonoBehaviour
 {
+  [Header("UI Components")]
   [SerializeField]
   private RecordButtonController rbc;
 
+  [Header("General ARSession Components")]
   [SerializeField]
   private ARSession arSession;
-
   private XRSessionSubsystem _sessionSubsystem;
   private NativeSessionWrapper _nativeWrapper;
 
+  private IARCameraPoseService _cameraPoseService;
+
+  [Header("SessionManager State Variables")]
   private bool _attached;
   private double _currentArTimestamp = 0.0;
+  private bool _isInitialized;
+
+  public void Initialize(IARCameraPoseService poseService)
+  {
+    _cameraPoseService = poseService;
+  }
 
   void Start()
   {
+    if (!_isInitialized) { return; }
     TryAttach();
   }
 
@@ -41,7 +52,9 @@ public class SessionManager : MonoBehaviour
 
     if (_attached)
     {
-      // _currentArTimestamp = SessionManagerApi.GetSessionTimestamp();
+      CameraPose pose = _cameraPoseService.GetUnityARSessionCameraPose();
+      Vector3 camPosition = pose.Position;
+      Quaternion camRotation = pose.Rotation;
 
       if (rbc.GetIsRecording())
         CoordinatorApi.UpdateRecording();
