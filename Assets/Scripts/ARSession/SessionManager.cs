@@ -30,11 +30,12 @@ public class SessionManager : MonoBehaviour
   [Header("SessionManager State Variables")]
   private bool _attached;
   private double _currentArTimestamp = 0.0;
-  private bool _isInitialized;
+  private bool _isInitialized = false;
 
   public void Initialize(IARCameraPoseService poseService)
   {
     _cameraPoseService = poseService;
+    _isInitialized = true;
   }
 
   void Start()
