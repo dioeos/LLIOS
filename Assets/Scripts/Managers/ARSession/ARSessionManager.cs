@@ -13,11 +13,9 @@ public struct NativeSessionWrapper
 }
 
 
-public class SessionManager : MonoBehaviour
+public class ARSessionManager : MonoBehaviour
 {
-  [Header("UI Components")]
-  [SerializeField]
-  private RecordButtonController rbc;
+  private UIRecordButtonManager rbc;
 
   [Header("General ARSession Components")]
   [SerializeField]
@@ -32,9 +30,10 @@ public class SessionManager : MonoBehaviour
   private double _currentArTimestamp = 0.0;
   private bool _isInitialized = false;
 
-  public void Initialize(IARCameraPoseService poseService)
+  public void Initialize(IARCameraPoseService poseService, UIRecordButtonManager buttonManager)
   {
     _cameraPoseService = poseService;
+    rbc = buttonManager;
     _isInitialized = true;
   }
 
@@ -57,7 +56,8 @@ public class SessionManager : MonoBehaviour
       Vector3 camPosition = pose.Position;
       Quaternion camRotation = pose.Rotation;
 
-      if (rbc.GetIsRecording())
+      if (rbc.IsRecording())
+// TODO: pass in camPosition and camRotation as params into Update
         CoordinatorApi.UpdateRecording();
     }
   }
@@ -127,7 +127,12 @@ public class SessionManager : MonoBehaviour
     return _currentArTimestamp;
   }
 
-  public bool GetIsAttached()
+  // public bool GetIsAttached()
+  // {
+  //   return _attached;
+  // }
+
+  public bool IsPluginAttachedToSession()
   {
     return _attached;
   }
