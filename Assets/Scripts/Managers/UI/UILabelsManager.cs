@@ -22,7 +22,19 @@ public class UILabelsManager : MonoBehaviour
   void Start()
   {
     _recordingStateLabel = _uIComponentsService.GetLabel("Label");
-    if (_recordingStateLabel == null) { return; }
+    if (_recordingStateLabel != null && _sm != null)
+    {
+      StartCoroutine(InitializeLabelWhenReady());
+    }
+  }
+
+  private System.Collections.IEnumerator InitializeLabelWhenReady()
+  {
+    // Wait until the AR session is fully initialized and attached
+    while (!_sm.IsPluginAttachedToSession())
+    {
+      yield return null;
+    }
 
     bool isReplayAvailable = UnityAppleReplayKitApi.IsReplayKitAvailable();
     string version = _sm.GetARSessionVersion().ToString();
