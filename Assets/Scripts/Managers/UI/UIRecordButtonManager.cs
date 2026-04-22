@@ -36,7 +36,7 @@ public class UIRecordButtonManager : MonoBehaviour
   private void OnRecordButtonClicked() 
   {
     if (!_sessionService.IsPluginAttachedToSession()) { return; }
-    if (_recordingService.IsRecording())
+    if (!_recordingService.IsRecording())
     {
       _recordingService.StartRecording();
       _recordingService.SetIsRecording(true);
