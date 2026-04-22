@@ -45,7 +45,10 @@ public class AppCoordinator : MonoBehaviour
       uiComponentsService,
       _sessionManager
     );
-    _uiLabelsManager.Initialize(uiComponentsService);
+    _uiLabelsManager.Initialize(
+      uiComponentsService,
+      _sessionManager
+    );
 
       
   }
