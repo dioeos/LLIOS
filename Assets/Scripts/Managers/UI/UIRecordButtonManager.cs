@@ -13,10 +13,10 @@ public class UIRecordButtonManager : MonoBehaviour
   private Button _recordButton;
   private bool _isRecording;
 
-  private UIComponentsService _uiComponentsService;
+  private IUIComponentsService _uiComponentsService;
   private bool _isInitialized = false;
 
-  public void Initialize(UIComponentsService uiComponentsService, ARSessionManager sessionManager)
+  public void Initialize(IUIComponentsService uiComponentsService, ARSessionManager sessionManager)
   {
     _uiComponentsService = uiComponentsService;
     _sessionManager = sessionManager;

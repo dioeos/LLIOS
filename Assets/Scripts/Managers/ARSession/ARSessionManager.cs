@@ -127,11 +127,6 @@ public class ARSessionManager : MonoBehaviour
     return _currentArTimestamp;
   }
 
-  // public bool GetIsAttached()
-  // {
-  //   return _attached;
-  // }
-
   public bool IsPluginAttachedToSession()
   {
     return _attached;

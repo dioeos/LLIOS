@@ -27,7 +27,7 @@ public class AppCoordinator : MonoBehaviour
     var camera = GetComponent<ARCameraManager>();
 
     IARCameraPoseService poseService = new ARCameraPoseService(_arCamera);
-    UIComponentsService uiComponentsService = new UIComponentsService(_ui);
+    IUIComponentsService uiComponentsService = new UIComponentsService(_ui);
 
 
     //AR managers

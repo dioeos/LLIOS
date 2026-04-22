@@ -9,10 +9,10 @@ public class UILabelsManager : MonoBehaviour
   private Label _recordingStateLabel;
   private bool _isRecording;
 
-  private UIComponentsService _uIComponentsService;
+  private IUIComponentsService _uIComponentsService;
   private bool _isInitialized = false;
 
-  public void Initialize(UIComponentsService uIComponentsService, ARSessionManager sm)
+  public void Initialize(IUIComponentsService uIComponentsService, ARSessionManager sm)
   {
     _uIComponentsService = uIComponentsService;
     _sm = sm;
