@@ -9,16 +9,17 @@ public class UIRecordButtonManager : MonoBehaviour
 
   //RecordButtonManager state variables
   private Button _recordButton;
-  private bool _isRecording;
 
   private IUIComponentsService _uiComponentsService;
   private IARSessionStatusService _sessionService;
+  private IRecordingService _recordingService;
   private bool _isInitialized = false;
 
-  public void Initialize(IUIComponentsService uiComponentsService, IARSessionStatusService sessionService)
+  public void Initialize(IUIComponentsService uiComponentsService, IARSessionStatusService sessionService, IRecordingService recordingService)
   {
     _uiComponentsService = uiComponentsService;
     _sessionService = sessionService;
+    _recordingService = recordingService;
     _isInitialized = true;
   }
 
@@ -35,21 +36,15 @@ public class UIRecordButtonManager : MonoBehaviour
   private void OnRecordButtonClicked() 
   {
     if (!_sessionService.IsPluginAttachedToSession()) { return; }
-    if (_isRecording)
+    if (_recordingService.IsRecording())
     {
-      CoordinatorApi.StopRecording();
-      _isRecording = false;
-
+      _recordingService.StartRecording();
+      _recordingService.SetIsRecording(true);
     }
-    else 
+    else
     {
-      CoordinatorApi.StartRecording();
-      _isRecording = true;
+      _recordingService.StopRecording();
+      _recordingService.SetIsRecording(false);
     }
-  }
-
-  public bool IsRecording()
-  {
-    return _isRecording;
   }
 }

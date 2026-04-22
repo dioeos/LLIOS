@@ -5,8 +5,6 @@ using Dioeos.UnityAppleReplayKit;
 
 public class ARSessionManager : MonoBehaviour
 {
-  private UIRecordButtonManager rbc;
-
   [Header("General ARSession Components")]
   [SerializeField]
   private ARSession arSession;
@@ -14,17 +12,18 @@ public class ARSessionManager : MonoBehaviour
 
   private IARCameraPoseService _cameraPoseService;
   private IARSessionStatusService _sessionService;
+  private IRecordingService _recordingService;
 
   [Header("SessionManager State Variables")]
   private bool _attached;
   private double _currentArTimestamp = 0.0;
   private bool _isInitialized = false;
 
-  public void Initialize(IARCameraPoseService poseService, IARSessionStatusService sessionService, UIRecordButtonManager buttonManager)
+  public void Initialize(IARCameraPoseService poseService, IARSessionStatusService sessionService, IRecordingService recordingService)
   {
     _cameraPoseService = poseService;
     _sessionService = sessionService;
-    rbc = buttonManager;
+    _recordingService = recordingService;
     _isInitialized = true;
   }
 
@@ -47,9 +46,9 @@ public class ARSessionManager : MonoBehaviour
       Vector3 camPosition = pose.Position;
       Quaternion camRotation = pose.Rotation;
 
-      if (rbc.IsRecording())
+      if (_recordingService.IsRecording())
 // TODO: pass in camPosition and camRotation as params into Update
-        CoordinatorApi.UpdateRecording();
+        _recordingService.UpdateRecording();
     }
   }
 

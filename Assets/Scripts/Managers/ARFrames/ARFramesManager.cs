@@ -5,12 +5,12 @@ using UnityEngine.XR.ARSubsystems;
 public class ARFramesManager : MonoBehaviour
 {
   private ARCameraManager _arCameraManager;
-  private UIRecordButtonManager _rbm;
+  private IRecordingService _recordingService;
 
-  public void Initialize(ARCameraManager camera, UIRecordButtonManager rbm)
+  public void Initialize(ARCameraManager camera, IRecordingService recordingService)
   {
     _arCameraManager = camera;
-    _rbm = rbm;
+    _recordingService = recordingService;
   }
 
   void OnEnable() 
@@ -27,6 +27,6 @@ public class ARFramesManager : MonoBehaviour
 
   private void OnFrameReceived(ARCameraFrameEventArgs args)
   {
-    if (!_rbm.IsRecording()) { return; }
+    if (!_recordingService.IsRecording()) { return; }
   }
 }

@@ -31,23 +31,25 @@ public class AppCoordinator : MonoBehaviour
     IARCameraPoseService poseService = new ARCameraPoseService(_arCamera);
     IUIComponentsService uiComponentsService = new UIComponentsService(_ui);
     IARSessionStatusService sessionService = new ARSessionStatusService(_arSession);
+    IRecordingService recordingService = new RecordingService();
 
 
     //AR managers
     _sessionManager.Initialize(
       poseService,
       sessionService,
-      _uiRecordButtonManager
+      recordingService
     );
     _framesManager.Initialize(
       camera,
-      _uiRecordButtonManager
+      recordingService
     );
 
     //UI managers
     _uiRecordButtonManager.Initialize(
       uiComponentsService,
-      sessionService
+      sessionService,
+      recordingService
     );
     _uiLabelsManager.Initialize(
       uiComponentsService,
