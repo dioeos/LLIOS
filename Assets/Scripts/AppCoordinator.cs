@@ -9,6 +9,8 @@ public class AppCoordinator : MonoBehaviour
   private Camera _arCamera;
   [SerializeField]
   private UIDocument _ui;
+  [SerializeField]
+  private ARSession _arSession;
 
   [Header("AR Managers")]
   [SerializeField]
@@ -28,11 +30,13 @@ public class AppCoordinator : MonoBehaviour
 
     IARCameraPoseService poseService = new ARCameraPoseService(_arCamera);
     IUIComponentsService uiComponentsService = new UIComponentsService(_ui);
+    IARSessionStatusService sessionService = new ARSessionStatusService(_arSession);
 
 
     //AR managers
     _sessionManager.Initialize(
       poseService,
+      sessionService,
       _uiRecordButtonManager
     );
     _framesManager.Initialize(
@@ -43,11 +47,11 @@ public class AppCoordinator : MonoBehaviour
     //UI managers
     _uiRecordButtonManager.Initialize(
       uiComponentsService,
-      _sessionManager
+      sessionService
     );
     _uiLabelsManager.Initialize(
       uiComponentsService,
-      _sessionManager
+      sessionService
     );
 
       

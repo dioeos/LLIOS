@@ -7,19 +7,18 @@ public class UIRecordButtonManager : MonoBehaviour
   [SerializeField]
   private UIDocument ui;
 
-  private ARSessionManager _sessionManager;
-
   //RecordButtonManager state variables
   private Button _recordButton;
   private bool _isRecording;
 
   private IUIComponentsService _uiComponentsService;
+  private IARSessionStatusService _sessionService;
   private bool _isInitialized = false;
 
-  public void Initialize(IUIComponentsService uiComponentsService, ARSessionManager sessionManager)
+  public void Initialize(IUIComponentsService uiComponentsService, IARSessionStatusService sessionService)
   {
     _uiComponentsService = uiComponentsService;
-    _sessionManager = sessionManager;
+    _sessionService = sessionService;
     _isInitialized = true;
   }
 
@@ -35,7 +34,7 @@ public class UIRecordButtonManager : MonoBehaviour
 
   private void OnRecordButtonClicked() 
   {
-    if (!_sessionManager.IsPluginAttachedToSession()) { return; }
+    if (!_sessionService.IsPluginAttachedToSession()) { return; }
     if (_isRecording)
     {
       CoordinatorApi.StopRecording();

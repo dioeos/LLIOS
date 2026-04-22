@@ -1,17 +1,7 @@
 using UnityEngine;
 using UnityEngine.XR.ARFoundation;
 using UnityEngine.XR.ARSubsystems;
-using System;
-using System.Runtime.InteropServices;
 using Dioeos.UnityAppleReplayKit;
-
-[StructLayout(LayoutKind.Sequential)]
-public struct NativeSessionWrapper
-{
-  public int version;
-  public IntPtr session;
-}
-
 
 public class ARSessionManager : MonoBehaviour
 {
@@ -21,18 +11,19 @@ public class ARSessionManager : MonoBehaviour
   [SerializeField]
   private ARSession arSession;
   private XRSessionSubsystem _sessionSubsystem;
-  private NativeSessionWrapper _nativeWrapper;
 
   private IARCameraPoseService _cameraPoseService;
+  private IARSessionStatusService _sessionService;
 
   [Header("SessionManager State Variables")]
   private bool _attached;
   private double _currentArTimestamp = 0.0;
   private bool _isInitialized = false;
 
-  public void Initialize(IARCameraPoseService poseService, UIRecordButtonManager buttonManager)
+  public void Initialize(IARCameraPoseService poseService, IARSessionStatusService sessionService, UIRecordButtonManager buttonManager)
   {
     _cameraPoseService = poseService;
+    _sessionService = sessionService;
     rbc = buttonManager;
     _isInitialized = true;
   }
@@ -40,14 +31,14 @@ public class ARSessionManager : MonoBehaviour
   void Start()
   {
     if (!_isInitialized) { return; }
-    TryAttach();
+    _attached = _sessionService.AttachPluginToSession();
   }
 
   void Update()
   {
     if (!_attached)
     {
-      TryAttach();
+      _attached = _sessionService.AttachPluginToSession();
     }
 
     if (_attached)
@@ -62,74 +53,9 @@ public class ARSessionManager : MonoBehaviour
     }
   }
 
-  private void TryAttach()
-  {
-    if (_sessionSubsystem == null || _sessionSubsystem.nativePtr == IntPtr.Zero)
-    {
-      MarshalNativePointer();
-    }
-
-    if (_sessionSubsystem != null && _sessionSubsystem.nativePtr != IntPtr.Zero)
-    {
-      _attached = AttachSession(_sessionSubsystem.nativePtr);
-    }
-  }
-
   void OnDestroy()
   {
-    DetachSession();
-  }
-
-  private void DetachSession()
-  {
-    CoordinatorApi.DetachSession();
-  }
-
-  private bool AttachSession(IntPtr sessionPointer)
-  {
-    if (sessionPointer == IntPtr.Zero)
-      return false;
-
-    bool isConnected = CoordinatorApi.AttachSession(sessionPointer);
-    return isConnected;
-  }
-
-  private void MarshalNativePointer()
-  {
-    if (arSession == null)
-      return;
-
-    _sessionSubsystem = arSession.subsystem;
-
-    if (_sessionSubsystem == null)
-      return;
-
-    IntPtr wrapperPtr = _sessionSubsystem.nativePtr;
-
-    if (wrapperPtr == IntPtr.Zero)
-      return;
-
-    _nativeWrapper = Marshal.PtrToStructure<NativeSessionWrapper>(wrapperPtr);
-  }
-
-  public int GetARSessionVersion()
-  {
-    return _nativeWrapper.version;
-  }
-
-  public IntPtr GetARSessionPtr()
-  {
-    return _nativeWrapper.session;
-  }
-
-  public double GetTimestamp()
-  {
-    return _currentArTimestamp;
-  }
-
-  public bool IsPluginAttachedToSession()
-  {
-    return _attached;
+    _sessionService.DetachPluginFromSession();
   }
 }
 

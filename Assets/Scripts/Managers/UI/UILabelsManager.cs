@@ -4,25 +4,24 @@ using Dioeos.UnityAppleReplayKit;
 
 public class UILabelsManager : MonoBehaviour
 {
-  private ARSessionManager _sm;
-
   private Label _recordingStateLabel;
   private bool _isRecording;
 
   private IUIComponentsService _uIComponentsService;
+  private IARSessionStatusService _sessionService;
   private bool _isInitialized = false;
 
-  public void Initialize(IUIComponentsService uIComponentsService, ARSessionManager sm)
+  public void Initialize(IUIComponentsService uIComponentsService, IARSessionStatusService sessionService)
   {
     _uIComponentsService = uIComponentsService;
-    _sm = sm;
+    _sessionService = sessionService;
     _isInitialized = true;
   }
 
   void Start()
   {
     _recordingStateLabel = _uIComponentsService.GetLabel("Label");
-    if (_recordingStateLabel != null && _sm != null)
+    if (_recordingStateLabel != null)
     {
       StartCoroutine(InitializeLabelWhenReady());
     }
@@ -31,14 +30,14 @@ public class UILabelsManager : MonoBehaviour
   private System.Collections.IEnumerator InitializeLabelWhenReady()
   {
     // Wait until the AR session is fully initialized and attached
-    while (!_sm.IsPluginAttachedToSession())
+    while (!_sessionService.IsPluginAttachedToSession())
     {
       yield return null;
     }
 
     bool isReplayAvailable = UnityAppleReplayKitApi.IsReplayKitAvailable();
-    string version = _sm.GetARSessionVersion().ToString();
-    string ptrString = _sm.GetARSessionPtr().ToString();
+    string version = _sessionService.GetARSessionVersion().ToString();
+    string ptrString = _sessionService.GetARSessionPtr().ToString();
 
     _recordingStateLabel.text = $"{version} : {ptrString}";
   }
