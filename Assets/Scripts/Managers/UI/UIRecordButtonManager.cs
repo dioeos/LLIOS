@@ -1,6 +1,5 @@
 using UnityEngine;
 using UnityEngine.UIElements;
-using Dioeos.UnityAppleReplayKit;
 
 public class UIRecordButtonManager : MonoBehaviour
 {
@@ -36,15 +35,14 @@ public class UIRecordButtonManager : MonoBehaviour
   private void OnRecordButtonClicked() 
   {
     if (!_sessionService.IsPluginAttachedToSession()) { return; }
+
     if (!_recordingService.IsRecording())
     {
-      _recordingService.StartRecording();
-      _recordingService.SetIsRecording(true);
+      _recordingService.RequestStartRecording();
     }
     else
     {
-      _recordingService.StopRecording();
-      _recordingService.SetIsRecording(false);
+      _recordingService.RequestStopRecording();
     }
   }
 }

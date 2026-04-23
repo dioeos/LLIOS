@@ -1,20 +1,8 @@
 using UnityEngine;
 
-public readonly struct CameraPose
-{
-  public Vector3 Position { get; }
-  public Quaternion Rotation { get; }
-
-  public CameraPose(Vector3 position, Quaternion rotation)
-  {
-    Position = position;
-    Rotation = rotation;
-  }
-}
-
 public interface IARCameraPoseService
 {
-  CameraPose GetUnityARSessionCameraPose();
+  Transform GetUnityARSessionCameraTransform();
 }
 
 public class ARCameraPoseService : IARCameraPoseService
@@ -25,9 +13,8 @@ public class ARCameraPoseService : IARCameraPoseService
   {
     _arCamera = arCamera;
   }
-  public CameraPose GetUnityARSessionCameraPose()
+  public Transform GetUnityARSessionCameraTransform()
   {
-    Transform ct = _arCamera.transform;
-    return new CameraPose(ct.position, ct.rotation);
+    return _arCamera.transform;
   }
 }

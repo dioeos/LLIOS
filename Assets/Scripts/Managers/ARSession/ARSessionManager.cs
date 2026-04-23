@@ -40,15 +40,24 @@ public class ARSessionManager : MonoBehaviour
       _attached = _sessionService.AttachPluginToSession();
     }
 
-    if (_attached)
-    {
-      CameraPose pose = _cameraPoseService.GetUnityARSessionCameraPose();
-      Vector3 camPosition = pose.Position;
-      Quaternion camRotation = pose.Rotation;
+    if (!_attached) { return; }
 
-      if (_recordingService.IsRecording())
-// TODO: pass in camPosition and camRotation as params into Update
-        _recordingService.UpdateRecording();
+    Transform pose = _cameraPoseService.GetUnityARSessionCameraTransform();
+
+    if (_recordingService.TryConsumeStartRequest())
+    {
+      _recordingService.StartRecording(pose);
+    }
+
+    if (_recordingService.TryConsumeStopRequest())
+    {
+      _recordingService.StopRecording();
+      return;
+    }
+
+    if (_recordingService.IsRecording())
+    {
+      _recordingService.UpdateRecording(pose);
     }
   }
 
@@ -57,4 +66,3 @@ public class ARSessionManager : MonoBehaviour
     _sessionService.DetachPluginFromSession();
   }
 }
-
