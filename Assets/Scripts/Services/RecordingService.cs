@@ -1,8 +1,10 @@
 using UnityEngine;
 using Dioeos.UnityAppleReplayKit;
+using System;
 
 public interface IRecordingService
 {
+  event Action<bool> OnRecordingStateChanged;
   void RequestStartRecording();
   void RequestStopRecording();
   bool TryConsumeStartRequest();
@@ -18,6 +20,8 @@ public class RecordingService : IRecordingService
   private bool _isRecording;
   private bool _startRequested;
   private bool _stopRequested;
+
+  public event System.Action<bool> OnRecordingStateChanged;
 
   public RecordingService() {}
 
@@ -58,6 +62,8 @@ public class RecordingService : IRecordingService
     CoordinatorApi.StartRecording(pose);
     _isRecording = true;
     _startRequested = false;
+
+    OnRecordingStateChanged?.Invoke(true);
   }
 
   public void StopRecording()
@@ -65,6 +71,7 @@ public class RecordingService : IRecordingService
     CoordinatorApi.StopRecording();
     _isRecording = false;
     _stopRequested = false;
+    OnRecordingStateChanged?.Invoke(false);
   }
 
   public void UpdateRecording(Transform pose)

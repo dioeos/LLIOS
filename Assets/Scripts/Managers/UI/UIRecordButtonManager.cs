@@ -3,128 +3,145 @@ using UnityEngine.UIElements;
 
 public class UIRecordButtonManager : MonoBehaviour
 {
-  [SerializeField]
-  private UIDocument ui;
+    [SerializeField]
+    private UIDocument ui;
 
-  //RecordButtonManager state variables
-  private Button _recordButton;
-  private VisualElement _recordVisual;
-  private VisualElement _recordContainer;
+    private Button _recordButton;
+    private VisualElement _recordVisual;
+    private VisualElement _recordContainer;
 
-  private IUIComponentsService _uiComponentsService;
-  private IARSessionStatusService _sessionService;
-  private IRecordingService _recordingService;
-  private bool _isInitialized = false;
+    private IUIComponentsService _uiComponentsService;
+    private IARSessionStatusService _sessionService;
+    private IRecordingService _recordingService;
 
-  public void Initialize(IUIComponentsService uiComponentsService, IARSessionStatusService sessionService, IRecordingService recordingService)
-  {
-    _uiComponentsService = uiComponentsService;
-    _sessionService = sessionService;
-    _recordingService = recordingService;
-    _isInitialized = true;
-  }
+    private bool _isInitialized = false;
+    private float _currentVisualSize = 0f;
 
-
-  void Start() 
-  {
-    _recordButton = _uiComponentsService.GetButton("record-button");
-    _recordVisual = _uiComponentsService.GetVisualElement("record-visual");
-    _recordContainer = _uiComponentsService.GetVisualElement("record-container");
-
-
-    if (_recordButton == null) { return; }
-
-    _recordContainer?.RegisterCallback<GeometryChangedEvent>(OnRecordContainerGeometryChanged);
-    _recordButton.clicked += OnRecordButtonClicked;
-  }
-
-  void OnDestroy()
-  {
-    if (_recordContainer != null)
+    public void Initialize(
+        IUIComponentsService uiComponentsService,
+        IARSessionStatusService sessionService,
+        IRecordingService recordingService)
     {
-      _recordContainer.UnregisterCallback<GeometryChangedEvent>(OnRecordContainerGeometryChanged);
+        _uiComponentsService = uiComponentsService;
+        _sessionService = sessionService;
+        _recordingService = recordingService;
+        _isInitialized = true;
     }
 
-    if (_recordButton != null)
+    void Start()
     {
-      _recordButton.clicked -= OnRecordButtonClicked;
+        if (!_isInitialized || _uiComponentsService == null || _recordingService == null)
+        {
+            Debug.LogError("UIRecordButtonManager was not initialized before Start().");
+            return;
+        }
+
+        _recordButton = _uiComponentsService.GetButton("record-button");
+        _recordVisual = _uiComponentsService.GetVisualElement("record-visual");
+        _recordContainer = _uiComponentsService.GetVisualElement("record-container");
+
+        if (_recordButton == null || _recordVisual == null)
+        {
+            Debug.LogError("Record button or record visual was not found.");
+            return;
+        }
+
+        _recordContainer?.RegisterCallback<GeometryChangedEvent>(OnRecordContainerGeometryChanged);
+        _recordButton.clicked += OnRecordButtonClicked;
+        _recordingService.OnRecordingStateChanged += OnRecordingStateChanged;
+
+        ApplyRecordVisualShape();
     }
-  }
 
-  private void OnRecordContainerGeometryChanged(GeometryChangedEvent evt)
-  {
-    ResizeRecordButton(evt.newRect.height);
-  }
+    void OnDestroy()
+    {
+        if (_recordContainer != null)
+        {
+            _recordContainer.UnregisterCallback<GeometryChangedEvent>(OnRecordContainerGeometryChanged);
+        }
 
-  private void ResizeRecordButton(float containerHeight)
-  {
-    if (_recordButton == null || containerHeight <= 0) { return; }
+        if (_recordButton != null)
+        {
+            _recordButton.clicked -= OnRecordButtonClicked;
+        }
 
-    float buttonSize = containerHeight * 0.8f;
-    float visualSize = buttonSize * 0.7f;
+        if (_recordingService != null)
+        {
+            _recordingService.OnRecordingStateChanged -= OnRecordingStateChanged;
+        }
+    }
 
-    _recordButton.style.width = buttonSize;
-    _recordButton.style.height = buttonSize;
-    _recordButton.style.maxWidth = buttonSize;
-    _recordButton.style.maxHeight = buttonSize;
+    private void OnRecordContainerGeometryChanged(GeometryChangedEvent evt)
+    {
+        ResizeRecordButton(evt.newRect.height);
+    }
 
-    float buttonRadius = buttonSize * 0.5f;
-    _recordButton.style.borderTopLeftRadius = buttonRadius;
-    _recordButton.style.borderTopRightRadius = buttonRadius;
-    _recordButton.style.borderBottomLeftRadius = buttonRadius;
-    _recordButton.style.borderBottomRightRadius = buttonRadius;
+    private void ResizeRecordButton(float containerHeight)
+    {
+        if (_recordButton == null || containerHeight <= 0) { return; }
 
-    if (_recordVisual == null) { return; }
+        float buttonSize = containerHeight * 0.8f;
+        _currentVisualSize = buttonSize * 0.7f;
 
-    _recordVisual.style.width = visualSize;
-    _recordVisual.style.height = visualSize;
+        _recordButton.style.width = buttonSize;
+        _recordButton.style.height = buttonSize;
+        _recordButton.style.maxWidth = buttonSize;
+        _recordButton.style.maxHeight = buttonSize;
 
-    ApplyRecordVisualShape(visualSize);
-  }
+        float buttonRadius = buttonSize * 0.5f;
+        _recordButton.style.borderTopLeftRadius = buttonRadius;
+        _recordButton.style.borderTopRightRadius = buttonRadius;
+        _recordButton.style.borderBottomLeftRadius = buttonRadius;
+        _recordButton.style.borderBottomRightRadius = buttonRadius;
 
-  private void ApplyRecordVisualShape(float visualSize)
-  {
-      bool isRecording = _recordingService.IsRecording();
+        _recordVisual.style.width = _currentVisualSize;
+        _recordVisual.style.height = _currentVisualSize;
 
-      if (isRecording)
-      {
-          float radius = visualSize * 0.15f;
+        ApplyRecordVisualShape();
+    }
 
-          _recordVisual.style.borderTopLeftRadius = radius;
-          _recordVisual.style.borderTopRightRadius = radius;
-          _recordVisual.style.borderBottomLeftRadius = radius;
-          _recordVisual.style.borderBottomRightRadius = radius;
+    private void OnRecordButtonClicked()
+    {
+        if (!_sessionService.IsPluginAttachedToSession()) { return; }
 
-          _recordVisual.style.backgroundColor = Color.red;
-      }
-      else
-      {
-          _recordVisual.style.borderTopLeftRadius = StyleKeyword.Null;
-          _recordVisual.style.borderTopRightRadius = StyleKeyword.Null;
-          _recordVisual.style.borderBottomLeftRadius = StyleKeyword.Null;
-          _recordVisual.style.borderBottomRightRadius = StyleKeyword.Null;
+        if (_recordingService.IsRecording())
+        {
+            _recordingService.RequestStopRecording();
+        }
+        else
+        {
+            _recordingService.RequestStartRecording();
+        }
+    }
 
-          _recordVisual.style.backgroundColor = StyleKeyword.Null;
-      }
-  }
+    private void OnRecordingStateChanged(bool isRecording)
+    {
+        ApplyRecordVisualShape();
+    }
 
+    private void ApplyRecordVisualShape()
+    {
+        if (_recordVisual == null) { return; }
 
+        if (_recordingService.IsRecording())
+        {
+            float radius = _currentVisualSize * 0.15f;
 
-  private void OnRecordButtonClicked() 
-  {
-      if (!_sessionService.IsPluginAttachedToSession()) { return; }
+            _recordVisual.style.borderTopLeftRadius = radius;
+            _recordVisual.style.borderTopRightRadius = radius;
+            _recordVisual.style.borderBottomLeftRadius = radius;
+            _recordVisual.style.borderBottomRightRadius = radius;
 
-      if (!_recordingService.IsRecording())
-      {
-          _recordingService.RequestStartRecording();
-      }
-      else
-      {
-          _recordingService.RequestStopRecording();
-      }
+            _recordVisual.style.backgroundColor = Color.red;
+        }
+        else
+        {
+            _recordVisual.style.borderTopLeftRadius = StyleKeyword.Null;
+            _recordVisual.style.borderTopRightRadius = StyleKeyword.Null;
+            _recordVisual.style.borderBottomLeftRadius = StyleKeyword.Null;
+            _recordVisual.style.borderBottomRightRadius = StyleKeyword.Null;
 
-      ApplyRecordVisualShape(_recordVisual.resolvedStyle.width);
-  }
-
-
+            _recordVisual.style.backgroundColor = StyleKeyword.Null;
+        }
+    }
 }
