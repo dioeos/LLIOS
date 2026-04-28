@@ -5,6 +5,7 @@ public interface IUIComponentsService
 {
   Button GetButton(string buttonName);
   Label GetLabel(string labelName);
+  VisualElement GetVisualElement(string elementName);
 }
 
 public class UIComponentsService : IUIComponentsService
@@ -24,5 +25,10 @@ public class UIComponentsService : IUIComponentsService
   public Label GetLabel(string labelName)
   {
     return _ui.rootVisualElement?.Q<Label>($"{labelName}");
+  }
+
+  public VisualElement GetVisualElement(string elementName)
+  {
+    return _ui.rootVisualElement?.Q<VisualElement>($"{elementName}");
   }
 }
