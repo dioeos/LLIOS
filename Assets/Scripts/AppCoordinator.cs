@@ -32,6 +32,7 @@ public class AppCoordinator : MonoBehaviour
     IUIComponentsService uiComponentsService = new UIComponentsService(_ui);
     IARSessionStatusService sessionService = new ARSessionStatusService(_arSession);
     IRecordingService recordingService = new RecordingService();
+    ILocationService locationService = new LocationService();
 
 
     //AR managers
@@ -53,7 +54,8 @@ public class AppCoordinator : MonoBehaviour
     );
     _uiLabelsManager.Initialize(
       uiComponentsService,
-      sessionService
+      sessionService,
+      locationService
     );
 
       
