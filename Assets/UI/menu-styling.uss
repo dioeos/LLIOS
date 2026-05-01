@@ -18,7 +18,8 @@
 }
 
 .header-label {
-  color: #fff
+  color: #fff;
+  font-size: 6px;
 }
 
 .bottom-container {
