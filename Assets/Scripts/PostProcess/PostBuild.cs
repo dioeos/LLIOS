@@ -21,6 +21,10 @@ public class PostBuild
 
             rootDict.SetBoolean("UIFileSharingEnabled", true);
             rootDict.SetBoolean("LSSupportsOpeningDocumentsInPlace", true);
+            rootDict.SetString(
+                "NSLocationWhenInUseUsageDescription",
+                "This app uses your location to record GPS data during capture."
+            );
 
             File.WriteAllText(plistPath, plist.WriteToString());
             Debug.Log("Successfully updated Info.plist to enable UIFileSharingEnabled and LSSupportsOpeningDocumentsInPlace");
